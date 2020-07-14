@@ -16,7 +16,7 @@ build:
     paths:
       - dist/
     only:
-    - naveena
+    - master
  
 deploy:
   stage: deploy
@@ -29,8 +29,8 @@ deploy:
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config' 
        
   script:
-      - scp -r dist/property-management/* ubuntu@$DEPLOY_SERVER:/var/www/coworking-space/property-search-coworking/dist/property-search-coworking/ 
+      - scp -r dist/* ubuntu@$DEPLOY_SERVER:/var/www/coworking-space/property-search-coworking/dist/property-search-coworking/ 
   environment:
   name: development
   only:
-    - naveena
+    - master
