@@ -1,36 +1,34 @@
-image: docker:latest
-services:
-  - name: docker:dind
+image: node:latest
+
+# This is the stages / task to perfom in jobs
 stages:
   - build
   - deploy
-build:
+  
+# This command is run before the execution of stages   
+before_script:
+  - npm install
+
+# Job One for making build
+build_master:
   stage: build
-  image: node
   script:
-     - apt update
-     - npm install -g @angular/cli
-     - npm install
-     - ng build --configuration=dev
-     - echo "BUILD SUCCESSFUL"
-  artifacts:
-    paths:
-      - dist/
-    only:
-    - master
-deploy:
+  - npm run build
+  only: ['master']
+
+# Job Two for deploy build to server
+deploy_master:
   stage: deploy
-  dependencies:
-     - build
-  before_script: 
-      - mkdir -p ~/.ssh     
-      - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa     
-      - chmod 600 ~/.ssh/id_rsa     
-      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config' 
-       
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - chmod 400 $PRIVATE_KEY
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - apt-get update -y
+    - apt-get -y install rsync
   script:
-      - scp -r dist/* ubuntu@$DEPLOY_SERVER:/var/www/coworking-space/property-search-coworking/dist/property-search-coworking/ 
-  environment:
-  name: development
-  only:
-    - master
+    - ssh -i $PRIVATE_KEY ubuntu@$SERVER_IP
+    - rsync -zvhr -auv -e "ssh -i $PRIVATE_KEY" dist/ ubuntu@$SERVER_IP:/var/www/html/angular/
+  only: ['master']
