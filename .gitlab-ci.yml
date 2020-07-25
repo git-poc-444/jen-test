@@ -32,11 +32,11 @@ deploy_master:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - chmod 400 $SSH_PRIVATE_KEY
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#    - sudo chmod 400 ~/$SSH_PRIVATE_KEY
+#    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - ssh -i $SSH_PRIVATE_KEY ubuntu@$DEPLOY_SERVER
-    - rsync -zvhr -auv -e "ssh -i $SSH_PRIVATE_KEY" dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd
+    - ssh ubuntu@$DEPLOY_SERVER
+    - rsync -zvhr -auv -e ssh dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd
   only: ['master']
