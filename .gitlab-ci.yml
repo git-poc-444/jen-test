@@ -40,5 +40,8 @@ deploy_master:
   script:
 #    - ssh ubuntu@$DEPLOY_SERVER
     - sshpass -p Lets@1118 ssh ubuntu@$DEPLOY_SERVER
-    - sudo rsync -zvhr -auv -e ssh dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd
+#    - rsync -zvhr -auv -e ssh dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd
+    - sh ‘ssh ubuntu@$DEPLOY_SERVER rm -rf /var/www/test-angular-cicd/dist/pwa-example’
+    - sh ‘ssh ubuntu@$DEPLOY_SERVER mkdir -p /var/www/test-angular-cicd/dist/’
+    - sh ‘scp -r dist user@$DEPLOY_SERVER:/var/www/test-angular-cicd/dist/’
   only: ['master']
