@@ -37,6 +37,7 @@ deploy_master:
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - ssh ubuntu@$DEPLOY_SERVER
+#    - ssh ubuntu@$DEPLOY_SERVER
+    - ssh ubuntu@3.237.68.150 -p Lets@1118
     - rsync -zvhr -auv -e ssh dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd
   only: ['master']
