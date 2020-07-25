@@ -40,6 +40,8 @@ deploy_master:
     - apt-get update -y
     - apt-get install sshpass
     - apt-get -y install rsync
+  dependencies:
+    - build
   script:
 #    - ssh ubuntu@$DEPLOY_SERVER
     - sshpass -p Lets@1118 ssh ubuntu@$DEPLOY_SERVER
