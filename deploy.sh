@@ -1,5 +1,5 @@
 #!/bin/sh     
-ssh ubuntu@$DEPLOY_SERVER <<EOF       
+sshpass -p Lets@1118 ssh ubuntu@$DEPLOY_SERVER <<EOF       
 echo "Project Folder"
 cd /var/www/test-angular-cicd
 git pull origin/master  
