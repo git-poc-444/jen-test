@@ -42,7 +42,7 @@ deploy_master:
     - apt-get install sshpass
     - apt-get -y install rsync
   script:
-    - sshpass -p 'Lets@1118' rsync -arv dist/ -e ssh ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/dist/
+    - sshpass -p $SSH_PWD rsync -arv dist/ -e ssh ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/dist/
 #    - rsync -zvhr -auv -e ssh dist/ ssh ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/
 #    - rsync -rav --delete dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/
   only: ['master']
