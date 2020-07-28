@@ -39,13 +39,8 @@ deploy_master:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - apt-get update -y
     - apt-get install sshpass
-#    - apt-get -y install rsync
+    - apt-get -y install rsync
   script:
-#    - ssh ubuntu@$DEPLOY_SERVER
     - sshpass -p Lets@1118 ssh ubuntu@$DEPLOY_SERVER
-#    - rsync -zvhr -auv -e ssh dist/ ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/dist/
-    # - sh ‘ssh ubuntu@$DEPLOY_SERVER rm -rf /var/www/test-angular-cicd/dist/pwa-example’
-    # - sh ‘ssh ubuntu@$DEPLOY_SERVER mkdir -p /var/www/test-angular-cicd/dist/’
-    - cp -r dist/ sshpass -p Lets@1118 ssh ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/dist/
-#    - sh deploy.sh
+    - rsync -zvhr -auv -e ssh dist/ "sshpass -p Lets@1118" ssh ubuntu@$DEPLOY_SERVER:/var/www/test-angular-cicd/
   only: ['master']
